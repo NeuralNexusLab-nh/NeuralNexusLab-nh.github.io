@@ -5,7 +5,7 @@
   <script>
     const query = new URLSearchParams(window.location.search);
     if (query.get('url')) {
-        fetch(query.get('url')).then(res => res.text()).then(data => document.body.innerHTML = data;);
+        fetch(query.get('url')).then(res => res.text()).then(data => document.body.innerHTML = data);
     } else if (query.get('html')) {
         document.body.innerHTML = query.get('html');
     } else {
