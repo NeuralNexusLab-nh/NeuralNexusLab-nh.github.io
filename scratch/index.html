@@ -120,7 +120,7 @@
     fetch(`https://api.scratch.mit.edu/projects/${id}`)
       .then(res => res.json())
       .then(data => {
-        api.innerHTML = `<hr>${JSON.stringify(data, null, 2).replace(/\n/g, "<br>")}<hr>`;
+        api.innerHTML = `<hr><p>${JSON.stringify(data, null, 2).replace(/\n/g, "<br>")}</p><hr>`;
       });
   }
 
