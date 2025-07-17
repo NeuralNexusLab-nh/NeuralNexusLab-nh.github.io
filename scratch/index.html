@@ -67,11 +67,13 @@
         width: 80vw;
       }
 
-      iframe {
-        width: 65vw;
-        height: 60vh;
-        border-radius: 12px;
-      }
+     iframe {
+  width: 600px;
+  height: 400px;
+  border-radius: 12px;
+  border: none;
+  margin-top: 20px;
+}
 
       #description {
         padding: 20px;
@@ -99,33 +101,36 @@
   </div>
 
   <script>
-    const input = document.getElementById('scratchIdInput');
-    const frame = document.getElementById('scratchFrame');
+  const input = document.getElementById('scratchIdInput');
+  const frame = document.getElementById('scratchFrame');
+  const api = document.getElementById('api');
 
-    input.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter') {
-        const id = input.value.trim();
-        if (id) {
-          window.location.hash = '#' + id;
-          updateFrame(id);
-        }
-      }
-    });
-
-    function updateFrame(id) {
-      frame.src = `https://scratch.mit.edu/projects/${id}/embed`;
-      fetch(`https://api.scratch.mit.edu/projects/${id}`).then(res => res.json()).then(data => {
-        api.innerHTML = `<hr>${data.replace("\n", "<br>)}<hr>`
-      });
-    }
-
-    window.addEventListener('load', () => {
-      const id = window.location.hash.replace('#', '');
+  input.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      const id = input.value.trim();
       if (id) {
-        input.value = id;
+        window.location.hash = '#' + id;
         updateFrame(id);
       }
-    });
-  </script>
+    }
+  });
+
+  function updateFrame(id) {
+    frame.src = `https://scratch.mit.edu/projects/${id}/embed`;
+    fetch(`https://api.scratch.mit.edu/projects/${id}`)
+      .then(res => res.json())
+      .then(data => {
+        api.innerHTML = `<hr>${JSON.stringify(data, null, 2).replace(/\n/g, "<br>")}<hr>`;
+      });
+  }
+
+  window.addEventListener('load', () => {
+    const id = window.location.hash.replace('#', '');
+    if (id) {
+      input.value = id;
+      updateFrame(id);
+    }
+  });
+</script>
 </body>
 </html>
