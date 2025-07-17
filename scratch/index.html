@@ -53,6 +53,7 @@
       height: 70vh;
       border: 2px solid #00ff88;
       margin-top: 20px;
+      border-radius: 12px;
     }
 
     #description {
@@ -75,8 +76,9 @@
       }
 
       iframe {
-        width: 95vw;
+        width: 80vw;
         height: 60vh;
+        border-radius: 12px;
       }
 
       #description {
@@ -99,9 +101,9 @@
   <div id="api"></div>
 
   <div id="description">
-    NetHacker Scratch lets you play Scratch projects with a hacker-styled dark interface and faster engine powered by TurboWarp.<br><br>
+    NetHacker Scratch runner lets you play Scratch projects with a hacker-styled dark interface and faster engine powered by TurboWarp.<br><br>
     This site was created by <strong>NeuralNexusLab - NetHacker</strong><br><br>
-    If you want to remix this site, feel free to <a href="https://github.com/NeuralNexusLab/NetHackerScratch" target="_blank">fork it on GitHub</a> and make it your own.
+    If you want to remix this site, feel free to <a href="https://github.com/NeuralNexusLab-nh/NeuralNexusLab-nh.github.io" target="_blank">remix it on GitHub</a> and make it your own.
   </div>
 
   <script>
@@ -121,7 +123,7 @@
     function updateFrame(id) {
       frame.src = `https://scratch.mit.edu/projects/${id}/embed`;
       fetch(`https://api.scratch.mit.edu/projects/${id}`).then(res => res.json()).then(data => {
-        api.innerHTML = `<hr>${data}<hr>`
+        api.innerHTML = `<hr>${data.replace("\n", "<br>)}<hr>`
       });
     }
 
