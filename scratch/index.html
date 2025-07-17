@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NetHacker</title>
+  <link rel="stylesheet" href="phosphorus.css" />
+  <link rel="stylesheet" href="studioview/studioview.css" />
+  <link rel="stylesheet" href="index.css" />
+  <script>
+    // Apply local dark mode preference very early to avoid a flash of white
+    (function () {
+      try {
+        if (localStorage.getItem("userPrefersDark") === "true") {
+          document.documentElement.classList.add("dark");
+        }
+      } catch (e) {
+        console.error("error loading theme choice", e);
+      }
+    })();
+  </script>
+  <meta name="google-site-verification" content="Re7zb-nm555twSGK216lVPDW-7v7ob1vQHYGQT3fBhE" />
+</head>
+
+<body>
+  <div class="theme-select">
+    <a class="switch-theme">switch theme</a>
+  </div>
+
+  <div id="app">
+    <div class="area" id="title-area">
+      <h1 class="title">NetHacker</h1>
+      <!-- 介紹文章改掉，這裡不放 forkphorus 說明 -->
+      <p>Paste a Scratch project ID or URL below, select a project file, drop a file on the page, or explore examples.</p>
+    </div>
+
+    <div id="examples-container" class="area">
+      <div id="examples-view"></div>
+      <div id="examples-footer"></div>
+    </div>
+
+    <div class="area" id="player-area"></div>
+
+    <div class="title">
+      <input class="url" value="https://scratch.mit.edu/projects/" spellcheck="false" />
+      <a
+        target="_blank"
+        class="project-link"
+        title="View project on Scratch"
+        rel="noopener"
+        href="https://scratch.mit.edu/"
+      ></a>
+    </div>
+
+    <div class="area" id="unshared-projects">
+      <h1>Unshared projects are no longer visible</h1>
+      <p>
+        Unshared projects are no longer visible due to Scratch API changes.
+      </p>
+      <p>
+        For more information and workarounds, visit:
+        <a href="https://docs.turbowarp.org/unshared-projects" target="_blank" rel="noopener noreferrer"
+          >https://docs.turbowarp.org/unshared-projects</a
+        >
+      </p>
+    </div>
+
+    <div class="area" id="project-area">
+      <section>
+        <h1 data-i18n="index.report">Report a problem</h1>
+        <p>
+          forkphorus is in maintenance mode, but it still receives occasional bug fixes.
+          <a
+            id="bug-link"
+            target="_blank"
+            rel="noopener"
+            href="https://github.com/forkphorus/forkphorus/issues/new"
+            >Click here</a
+          >
+          to report a problem with this project. You can also comment problems
+          <a href="https://scratch.mit.edu/projects/366001364/" target="_blank" rel="noopener">here</a> if you don't
+          have a GitHub account.
+        </p>
+      </section>
+
+      <section class="package">
+        <h1 data-i18n="index.embed">Embed this project</h1>
+        <p data-i18n="index.embed.description">Include the forkphorus player in your web site.</p>
+        <p class="embed-options">
+          <input readonly id="embed-code" />
+          <input type="checkbox" id="embed-auto-start" checked />
+          <label for="embed-auto-start" data-i18n="index.embed.autostart">Start automatically</label>
+          <input type="checkbox" id="embed-light-content" />
+          <label for="embed-light-content" data-i18n="index.embed.lightControls">Light controls</label>
+          <input type="checkbox" id="embed-hide-controls" />
+          <label for="embed-hide-controls" data-i18n="index.embed.hideUI">Hide UI</label>
+          <span>
+            <input type="radio" name="embed-resolution" id="embed-480" checked />
+            <label for="embed-480" data-i18n="index.package.480">480x360</label>
+            <input type="radio" name="embed-resolution" id="embed-other" />
+            <label for="embed-other" data-i18n="index.package.custom">Custom:</label>
+            <input id="embed-other-width" type="number" value="960" disabled min="1" />
+            <span class="package-other-divider" data-i18n="index.package.divider">&times;</span>
+            <input id="embed-other-height" type="number" value="720" disabled min="1" />
+          </span>
+        </p>
+      </section>
+
+      <section class="package">
+        <h1 data-i18n="index.package">Package this project</h1>
+        <p>
+          Get a link to a web page that automatically runs your project. To package to HTML, EXE, APK, or other
+          formats, use the <a href="packager/" id="html-packager">HTML packager</a>.
+        </p>
+        <p class="package-options">
+          <a href="#" target="_blank" id="package-link" data-i18n="index.package.button">Package</a>
+          <input type="checkbox" id="package-turbo" />
+          <label for="package-turbo" data-i18n="index.package.turbo">Turbo mode</label>
+          <input type="checkbox" id="package-controls" />
+          <label for="package-controls" data-i18n="index.package.controls">Controls</label>
+          <span>
+            <input type="radio" name="package-resolution" id="package-full-screen" checked />
+            <label for="package-full-screen" data-i18n="index.package.fullscreen">Full screen</label>
+
+            <input type="radio" name="package-resolution" id="package-480" />
+            <label for="package-480" data-i18n="index.package.480">480x360</label>
+
+            <input type="radio" name="package-resolution" id="package-other" />
+            <label for="package-other" data-i18n="index.package.custom">Custom:</label>
+            <input id="package-other-width" type="number" value="960" disabled min="1" />
+            <span class="package-other-divider" data-i18n="index.package.divider">&times;</span>
+            <input id="package-other-height" type="number" value="720" disabled min="1" />
+          </span>
+        </p>
+      </section>
+
+      <h1 data-i18n="index.settings">Settings</h1>
+      <table id="settings">
+        <tr>
+          <td class="name" title="Forkphorus will **attempt** to run at this framerate.">
+            <label for="settings-fps">Framerate (FPS)</label>
+          </td>
+          <td class="value">
+            <input
+              id="settings-fps"
+              value="0"
+              placeholder="30"
+              type="number"
+              step="any"
+              min="0"
+              required
+              autocomplete="off"
+            />
+          </td>
+        </tr>
+        <tr>
+          <td class="name" title="The value of the &quot;username&quot; block. Changing this may cause issues in some projects.">
+            <label for="settings-username">Username</label>
+          </td>
+          <td class="value">
+            <input id="settings-username" type="text" placeholder="(nothing)" autocomplete="off" />
+          </td>
+        </tr>
+        <tr>
+          <td class="name" title="Controls whether the renderer tries to make images look smoother.">
+            <label for="settings-image-smoothing">Image Smoothing</label>
+          </td>
+          <td class="value">
+            <input id="settings-image-smoothing" type="checkbox" autocomplete="off" />
+          </td>
+        </tr>
+        <tr>
+          <td class="name" title="Prevents sprites from moving offscreen.">
+            <label for="settings-sprite-fencing">Sprite Fencing</label>
+          </td>
+          <td class="value">
+            <input id="settings-sprite-fencing" type="checkbox" autocomplete="off" />
+          </td>
+        </tr>
+        <tr>
+          <td class="name" title="Removes some limits.">
+            <label for="settings-remove-limits">Remove some limits</label>
+          </td>
+          <td class="value">
+            <input id="settings-remove-limits" type="checkbox" autocomplete="off" />
+          </td>
+        </tr>
+      </table>
+      <p>Changes are applied automatically.</p>
+
+      <h1 data-i18n="index.advanced">Advanced Settings</h1>
+      <p>
+        Help test unfinished features. These require a refresh to apply.</b>
+        <a href="https://github.com/forkphorus/forkphorus/wiki/Advanced-Features" target="_blank">Please read this first</a>.
+      </p>
+      <div class="advanced">
+        <label><input id="advanced-webgl" class="advanced-feature" type="checkbox" /> WebGL Renderer</label>
+      </div>
+    </div>
+
+    <section>
+      <h1>Try out TurboWarp</h1>
+      <p style="margin-bottom: 0;">
+        <a id="turbowarp" href="https://turbowarp.org/" target="_black" rel="noopener">TurboWarp</a> typically has better
+        performance and compatibility than forkphorus and has an editor. Give it a try, you might like it.
+      </p>
+
+      <h1 data-i18n="index.credits">Credits</h1>
+      <p>
+        forkphorus is maintained by
+        <a href="https://scratch.mit.edu/users/GarboMuffin/">GarboMuffin</a> and
+        <a href="https://github.com/forkphorus/forkphorus/graphs/contributors">other contributors</a>. It is a fork of
+        <a href="https://github.com/nathan">Nathan</a>'s
+        <a href="https://phosphorus.github.io/">phosphorus</a>. Its CPS-style compilation was inspired by
+        <a href="https://github.com/RHY3756547">Rhys</a>'s
+        <a href="https://code.google.com/p/sb2-js/">sb2.js</a>. The
+        <a href="https://stuk.github.io/jszip/">JSZip</a> library is used to read
+        <code>.sb2</code> and <code>.sb3</code> files. The
+        <a href="https://github.com/canvg/canvg">canvg</a> library is used to render SVGs for Scratch 2 projects. The
+        <a href="https://github.com/LLK/scratch-sb1-converter">scratch-sb1-converter</a> library is used to support
+        Scratch 1 projects.
+      </p>
+
+      <h1 data-i18n="index.code">Code</h1>
+      <p>The source code for forkphorus is available <a href="https://github.com/forkphorus/forkphorus">on GitHub</a>.</p>
+
+      <footer>
+        <a data-i18n="index.privacy" href="privacy">Privacy Policy</a>
+        <br />
+        <small style="display: block; margin-top: 1em; text-align: center; font-weight: 600; color: #777;">
+          idea by forkphorus.github.io
+        </small>
+      </footer>
+    </section>
+  </div>
+
+  <script src="lib/scratch-sb1-converter.js"></script>
+  <script src="lib/jszip.min.js"></script>
+  <script src="lib/fontfaceobserver.standalone.js"></script>
+  <script src="lib/canvg.min.js"></script>
+  <script src="lib/purify.min.js"></script>
+  <script src="phosphorus.dist.js"></script>
+  <script src="common.js"></script>
+  <script src="studioview/studioview.js"></script>
+
+  <script>
+    P.i18n.addTranslations("en", {
+      "studioview.authorAttribution": "by $author",
+      "studioview.projectHoverText": "$title by $author",
+      "index.document.title": "forkphorus - phosphorus for Scratch 3",
+      "index.report": "Report a problem",
+      "index.embed": "Embed this project",
+      "index.package": "Package this project",
+      "index.settings": "Settings",
+      "index.credits": "Credits",
+      "index.code": "Code",
+      "index.studio.view": "View studio on Scratch.",
+      "index.package.button": "Package",
+      "index.package.turbo": "Turbo mode",
+      "index.package.controls": "Controls",
+      "index.package.fullscreen": "Full screen",
+      "index.package.480": "480\u00D7360",
+      "index.package.custom": "Other:",
+      "index.package.divider": "\u00D7",
+      "index.embed.description": "Include the forkphorus player in your web site.",
+      "index.embed.autostart": "Start automatically",
+      "index.embed.lightControls": "Light controls",
+      "index.embed.hideUI": "Hide UI",
+      "index.advanced": "Advanced Settings",
+      "index.privacy": "Privacy Policy"
+    });
+
+    // 其餘原始腳本不動，完全保留 forkphorus 的功能
+  </script>
+</body>
+
+</html>
