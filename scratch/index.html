@@ -1,150 +1,133 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <meta name="description" content="NetHacker Scratch Runner Agent">
-    <meta name="keywords" content="NetHacker, Scratch, Agent, API, runner">
-    <meta name="author" content="NetHacker">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NetHacker Scratch</title>
-    <style>
-    * {
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NetHacker Scratch</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #0f0f0f;
+      color: #00ff88;
+      font-family: "Courier New", Courier, monospace;
       margin: 0;
       padding: 0;
-      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
     }
-  
-    body {
-      background-color: #000;
-      color: #00ff00;
-      font-family: 'Courier New', Courier, monospace;
-      line-height: 1.6;
-      padding: 2rem;
-    }
-  
-    /* ====== Links ====== */
-    a {
-      color: #00ff00;
-      text-decoration: none;
-      position: relative;
-    }
-  
-    a::after {
-      content: '_';
-      animation: blink 1s infinite;
-      position: absolute;
-      right: -10px;
-    }
-  
-    /* ====== Inputs & Textarea ====== */
-    input, textarea {
-      background-color: #000;
-      color: #00ff00;
-      border: 1px solid #00ff00;
-      padding: 10px;
+
+    header {
       width: 100%;
-      font-size: 1rem;
-      transition: box-shadow 0.3s ease-in-out;
-    }
-  
-    input:focus, textarea:focus {
-      outline: none;
-      box-shadow: 0 0 10px #00ff00;
-    }
-
-    /* ====== Buttons ====== */
-    button {
-      background-color: #000;
-      color: #00ff00;
-      border: 2px solid #00ff00;
-      padding: 10px 20px;
-      font-family: 'Courier New', Courier, monospace;
-      font-size: 1rem;
-      cursor: pointer;
-      transition: transform 0.4s ease, box-shadow 0.3s ease;
-      position: relative;
-      overflow: hidden;
-    }
-  
-    /* Animation on hover */
-    button:hover {
-      transform: rotate(360deg);
-      box-shadow: 0 0 20px #00ff00;
-    }
-  
-    /* Pause animation on click (spin + glow stop) */
-    button:active {
-      animation-play-state: paused;
-      box-shadow: 0 0 10px #00ff00 inset;
-    }
-    
-    /* ====== Headings ====== */
-    h1, h2, h3, p {
-      color: #00ff00;
-      margin-bottom: 1rem;
-      text-shadow: 0 0 5px #00ff00;
-    }
-  
-    /* ====== Code Blocks ====== */
-    code, pre {
-      background-color: #111;
-      border: 1px solid #00ff00;
-      color: #00ff00;
-      padding: 10px;
-      display: block;
-      overflow-x: auto;
-    }
-  
-    /* ====== Terminal-style Box ====== */
-    .terminal-box {
-      background-color: #111;
-      border: 1px solid #00ff00;
       padding: 20px;
-      font-family: 'Courier New', Courier, monospace;
-      margin: 20px 0;
-      box-shadow: 0 0 20px #00ff00;
-      animation: flicker 2s infinite alternate;
+      text-align: center;
+      background-color: #111;
+      border-bottom: 2px solid #00ff88;
     }
 
-    /* ====== Animations ====== */
-    @keyframes blink {
-      0%, 50%, 100% { opacity: 1; }
-      25%, 75% { opacity: 0; }
+    h1 {
+      margin: 0;
+      font-size: 2em;
+      letter-spacing: 2px;
     }
-  
-    @keyframes flicker {
-      0% { opacity: 1; box-shadow: 0 0 20px #00ff00; }
-      100% { opacity: 0.8; box-shadow: 0 0 5px #00ff00; }
+
+    #scratch-input {
+      margin: 30px auto 10px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    input[type="text"] {
+      padding: 10px;
+      font-size: 16px;
+      background: #000;
+      color: #00ff88;
+      border: 2px solid #00ff88;
+      border-radius: 5px;
+      width: 300px;
+      text-align: center;
     }
 
     iframe {
-      height: 600px;
-      width: 800px;
-      border: 3px solid green;
-      border-radius: 12px;
-      box-shadow: 0 0 15px green;
+      width: 90vw;
+      height: 70vh;
+      border: 2px solid #00ff88;
+      margin-top: 20px;
     }
-    </style>
-  </head>
-  <body>
-    <h1>NetHacker Scratch Agent</h1>
-    <br>
-    <script>
-      if (window.location.href) {
-        const id = window.location.href.subString(1);
-        document.body.innerHTML += `<iframe src="https://scratch.mit.edu/projects/${id}/embed"></iframe>`;
-        fetch(`https://api.scratch.mit.edu/projects/${id}`).then(res => res.json).then(data => {
-          document.body.innerHTML += `<code>${data.replace("\n", "<br>")}</code>`;
-          document.body.innerHTML += "<br><br><h3>NetHacker description</h3><br><p>NetHacker is a company do Web Application and Penetration Test. <br> <a href='/'>official website</a></p>";
-          document.body.innerHTML += "<br><br><h3>credit</h3><br><p>Made By NetHacker <br> If you want to remix this, please write 'Remix https://neuralnexuslab-nh.github.io/scratch by [YOUR_NAME]'</p>"
-          document.body.innerHTML += "<br><p>&copy;NetHacker, All Rights Reserved.</p>
-        }
-      } else {
-        document.body.innerHTML +=  "<h2>add #{PROJECT_ID} to url</h2> <br>"
-          document.body.innerHTML += "<br><br><h3>NetHacker description</h3><br><p>NetHacker is a company do Web Application and Penetration Test. <br> <a href='/'>official website</a></p>";
-          document.body.innerHTML += "<br><br><h3>credit</h3><br><p>Made By NetHacker <br> If you want to remix this, please write 'Remix https://neuralnexuslab-nh.github.io/scratch by [YOUR_NAME]'</p>"
-          document.body.innerHTML += "<br><p>&copy;NetHacker, All Rights Reserved.</p>
+
+    #description {
+      max-width: 800px;
+      padding: 30px;
+      text-align: center;
+      font-size: 0.95em;
+      line-height: 1.6;
+      color: #00ff88;
+    }
+
+    #description a {
+      color: #00ffaa;
+      text-decoration: underline;
+    }
+
+    @media (max-width: 600px) {
+      input[type="text"] {
+        width: 80vw;
       }
-    </script>
-  </body>
+
+      iframe {
+        width: 95vw;
+        height: 60vh;
+      }
+
+      #description {
+        padding: 20px;
+        font-size: 0.85em;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>NetHacker Scratch</h1>
+  </header>
+
+  <div id="scratch-input">
+    <input type="text" id="scratchIdInput" placeholder="Enter Scratch Project ID and press Enter">
+  </div>
+
+  <iframe id="scratchFrame" src=""></iframe>
+
+  <div id="description">
+    NetHacker Scratch lets you play Scratch projects with a hacker-styled dark interface and faster engine powered by TurboWarp.<br><br>
+    This site was created by <strong>NeuralNexusLab</strong>, inspired by <a href="https://forkphros.github.io/" target="_blank">forkphros.github.io</a> and the idea of minimalist web tools.<br><br>
+    If you want to remix this site, feel free to <a href="https://github.com/NeuralNexusLab/NetHackerScratch" target="_blank">fork it on GitHub</a> and make it your own.
+  </div>
+
+  <script>
+    const input = document.getElementById('scratchIdInput');
+    const frame = document.getElementById('scratchFrame');
+
+    input.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const id = input.value.trim();
+        if (id) {
+          window.location.hash = '#' + id;
+          updateFrame(id);
+        }
+      }
+    });
+
+    function updateFrame(id) {
+      frame.src = `https://turbowarp.org/${id}?fps=60&turbo=true&fullscreen=true`;
+    }
+
+    window.addEventListener('load', () => {
+      const id = window.location.hash.replace('#', '');
+      if (id) {
+        input.value = id;
+        updateFrame(id);
+      }
+    });
+  </script>
+</body>
 </html>
