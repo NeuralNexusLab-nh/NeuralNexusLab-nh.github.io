@@ -49,7 +49,7 @@
     }
 
     iframe {
-      width: 90vw;
+      width: 83vw;
       height: 70vh;
       border: 2px solid #00ff88;
       margin-top: 20px;
@@ -95,11 +95,12 @@
     <input type="text" id="scratchIdInput" placeholder="Enter Scratch Project ID and press Enter">
   </div>
 
-  <iframe id="scratchFrame" src=""></iframe>
+  <iframe id="scratchFrame" src=""></iframe><br>
+  <div id="api"></div>
 
   <div id="description">
     NetHacker Scratch lets you play Scratch projects with a hacker-styled dark interface and faster engine powered by TurboWarp.<br><br>
-    This site was created by <strong>NeuralNexusLab</strong>, inspired by <a href="https://forkphros.github.io/" target="_blank">forkphros.github.io</a> and the idea of minimalist web tools.<br><br>
+    This site was created by <strong>NeuralNexusLab - NetHacker</strong><br><br>
     If you want to remix this site, feel free to <a href="https://github.com/NeuralNexusLab/NetHackerScratch" target="_blank">fork it on GitHub</a> and make it your own.
   </div>
 
@@ -118,7 +119,10 @@
     });
 
     function updateFrame(id) {
-      frame.src = `https://turbowarp.org/${id}?fps=60&turbo=true&fullscreen=true`;
+      frame.src = `https://scratch.mit.edu/projects/${id}/embed`;
+      fetch(`https://api.scratch.mit.edu/projects/${id}`).then(res => res.json()).then(data => {
+        api.innerHTML = `<hr>${data}<hr>`
+      });
     }
 
     window.addEventListener('load', () => {
